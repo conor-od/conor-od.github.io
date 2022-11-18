@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://conor-od.github.io/sitemap.xml
