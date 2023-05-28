@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+	<title>conor-od - java</title>
+	<subtitle>conor-od&#x27;s Website</subtitle>
+	<link href="https://conor-od.github.io/tags/java/atom.xml" rel="self" type="application/atom+xml"/>
+  <link href="https://conor-od.github.io"/>
+	<generator uri="https://www.getzola.org/">Zola</generator>
+	<updated>2023-03-31T00:00:00+00:00</updated>
+	<id>https://conor-od.github.io/tags/java/atom.xml</id>
+	<entry xml:lang="en">
+		<title>Multi-Module Gradle Project | Quick Start Guide</title>
+		<published>2023-03-31T00:00:00+00:00</published>
+		<updated>2023-03-31T00:00:00+00:00</updated>
+		<link rel="alternate" href="https://conor-od.github.io/blog/spring-multi-module-project-quick-start/" type="text/html"/>
+		<id>https://conor-od.github.io/blog/spring-multi-module-project-quick-start/</id>
+		<content type="html">&lt;h1 id=&quot;multi-module-gradle-project-quick-start-guide&quot;&gt;Multi-Module Gradle Project | Quick Start Guide&lt;&#x2F;h1&gt;
+&lt;p&gt;This is a guide for setting up a simple multi-module gradle project.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;prerequisites&quot;&gt;Prerequisites&lt;&#x2F;h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;jdk.java.net&#x2F;archive&#x2F;&quot;&gt;Java 17&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;www.jetbrains.com&#x2F;idea&#x2F;download&#x2F;&quot;&gt;IntelliJ Idea&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;step-1-create-new-gradle-project&quot;&gt;Step 1: Create New Gradle Project&lt;&#x2F;h2&gt;
+&lt;p&gt;First we need to create a new Gradle project. To do this we will use IntelliJ to create a new project with the following parameters:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Language: Java&lt;&#x2F;li&gt;
+&lt;li&gt;Build System: Gradle (DSL: Groovy)&lt;&#x2F;li&gt;
+&lt;li&gt;JDK: openJDK-17&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;We should now have a project with the following directory structure:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot;build tools&quot;&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-bash&quot;build tools&quot; &quot;&gt;&lt;code class=&quot;language-bash&quot;build tools&quot;&quot; data-lang=&quot;bash&quot;build tools&quot;&quot;&gt;&lt;span&gt;&amp;lt;project_root&amp;gt;
+&lt;&#x2F;span&gt;&lt;span&gt;├── gradle
+&lt;&#x2F;span&gt;&lt;span&gt;├── src
+&lt;&#x2F;span&gt;&lt;span&gt;├── build.gradle
+&lt;&#x2F;span&gt;&lt;span&gt;└── settings.gradle
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Since we creating a multi-module project, we do not require the src folder so it can be removed like so:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span&gt;&amp;lt;project_root&amp;gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;├──&lt;&#x2F;span&gt;&lt;span&gt; gradle
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;├──&lt;&#x2F;span&gt;&lt;span&gt; build.gradle
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;└──&lt;&#x2F;span&gt;&lt;span&gt; settings.gradle
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;step-2-configure-project&quot;&gt;Step 2: Configure Project&lt;&#x2F;h2&gt;
+&lt;p&gt;Next we will configure the project&#x27;s build.gradle. Any configuration added to this build script will be inherited by any modules we add later to the project, so we will keep this configuration generic. This means we will only configure the java plugin, java version, default group, the maven central repository, a test task and lombok dependency, as this configuration will be common to all modules.&lt;&#x2F;p&gt;
+&lt;p&gt;build.gradle (project)&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;groovy&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-groovy &quot;&gt;&lt;code class=&quot;language-groovy&quot; data-lang=&quot;groovy&quot;&gt;&lt;span&gt;plugins {
+&lt;&#x2F;span&gt;&lt;span&gt;    id &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;java&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;subprojects {
+&lt;&#x2F;span&gt;&lt;span&gt;    apply &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;plugin&lt;&#x2F;span&gt;&lt;span&gt;: &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;java&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;    group = &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;com.imanage.rm.poc&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;
+&lt;&#x2F;span&gt;&lt;span&gt;    sourceCompatibility = &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;JavaVersion&lt;&#x2F;span&gt;&lt;span&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;VERSION_17
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;    repositories {
+&lt;&#x2F;span&gt;&lt;span&gt;        mavenCentral()
+&lt;&#x2F;span&gt;&lt;span&gt;    }
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;    test {
+&lt;&#x2F;span&gt;&lt;span&gt;        useJUnitPlatform()
+&lt;&#x2F;span&gt;&lt;span&gt;    }
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;    dependencies {
+&lt;&#x2F;span&gt;&lt;span&gt;        compileOnly &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;org.projectlombok:lombok&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;
+&lt;&#x2F;span&gt;&lt;span&gt;        annotationProcessor &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;org.projectlombok:lombok&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;
+&lt;&#x2F;span&gt;&lt;span&gt;    }
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;step-3-create-new-module&quot;&gt;Step 3: Create New Module&lt;&#x2F;h2&gt;
+&lt;p&gt;Next we will add a new module to the project. To do this right click on the project, click new and select module. Name your module, and use the following settings:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Language: Java&lt;&#x2F;li&gt;
+&lt;li&gt;Build System: Gradle (DSL: Groovy)&lt;&#x2F;li&gt;
+&lt;li&gt;JDK: project SDK&lt;&#x2F;li&gt;
+&lt;li&gt;Parent: &lt;project-name&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;We should now have a project with the following directory structure:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span&gt;&amp;lt;project_root&amp;gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;└── &lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;module_root&amp;gt;
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;├──&lt;&#x2F;span&gt;&lt;span&gt; src
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;├──&lt;&#x2F;span&gt;&lt;span&gt; main
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;└──&lt;&#x2F;span&gt;&lt;span&gt; test
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;└──&lt;&#x2F;span&gt;&lt;span&gt; build.gradle
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;├──&lt;&#x2F;span&gt;&lt;span&gt; build.gradle
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;└──&lt;&#x2F;span&gt;&lt;span&gt; settings.gradle
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;step-4-configure-module&quot;&gt;Step 4: Configure Module&lt;&#x2F;h2&gt;
+&lt;p&gt;Finally we need to configure the module and configure the project so it knows of the new modules existence. We will inherit configuration from the project build.gradle, so we only need to add configuration specific to the new module to the module&#x27;s build.gradle. In this case I will be creating a Spring Batch Module, so will be adding the plugins and dependencies to support that, like so:&lt;&#x2F;p&gt;
+&lt;p&gt;build.gradle (module)&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;groovy&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-groovy &quot;&gt;&lt;code class=&quot;language-groovy&quot; data-lang=&quot;groovy&quot;&gt;&lt;span&gt;plugins {
+&lt;&#x2F;span&gt;&lt;span&gt;	id &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;org.springframework.boot&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39; version &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;3.0.5&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;
+&lt;&#x2F;span&gt;&lt;span&gt;	id &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;io.spring.dependency-management&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39; version &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;1.1.0&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;version = &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;0.0.1-SNAPSHOT&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;configurations {
+&lt;&#x2F;span&gt;&lt;span&gt;	compileOnly {
+&lt;&#x2F;span&gt;&lt;span&gt;		extendsFrom annotationProcessor
+&lt;&#x2F;span&gt;&lt;span&gt;	}
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;dependencies {
+&lt;&#x2F;span&gt;&lt;span&gt;	implementation &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;org.springframework.boot:spring-boot-starter-batch&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;
+&lt;&#x2F;span&gt;&lt;span&gt;	implementation &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;org.springframework.boot:spring-boot-starter-jdbc&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;
+&lt;&#x2F;span&gt;&lt;span&gt;	compileOnly &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;org.projectlombok:lombok&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;
+&lt;&#x2F;span&gt;&lt;span&gt;	runtimeOnly &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;com.microsoft.sqlserver:mssql-jdbc&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;
+&lt;&#x2F;span&gt;&lt;span&gt;	annotationProcessor &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;org.springframework.boot:spring-boot-configuration-processor&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;
+&lt;&#x2F;span&gt;&lt;span&gt;	annotationProcessor &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;org.projectlombok:lombok&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;
+&lt;&#x2F;span&gt;&lt;span&gt;	testImplementation &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;org.springframework.boot:spring-boot-starter-test&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;
+&lt;&#x2F;span&gt;&lt;span&gt;	testImplementation &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;org.springframework.batch:spring-batch-test&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Add the new module to project configuration by adding the line &lt;code&gt;include &#x27;&amp;lt;module_name&amp;gt;&#x27;&lt;&#x2F;code&gt; to the projects settings.gradle, like so:&lt;&#x2F;p&gt;
+&lt;p&gt;settings.gradle (module)&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;groovy&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-groovy &quot;&gt;&lt;code class=&quot;language-groovy&quot; data-lang=&quot;groovy&quot;&gt;&lt;span&gt;rootProject.name = &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;my-new-project&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;include &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;my-new-module&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;&#x2F;h2&gt;
+&lt;p&gt;That&#x27;s it, we have built our multi module project. To add more modules, just repeat steps 3 &amp;amp; 4.&lt;&#x2F;p&gt;
+</content>
+	</entry>
+</feed>

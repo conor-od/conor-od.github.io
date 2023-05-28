@@ -1,0 +1,554 @@
+<!doctype html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+      <!-- FAVICON -->
+      
+      
+      <link href='&#x2F;images&#x2F;avatar-1.png' rel="icon" sizes="16x16" type="image/png" />
+      
+      
+      <link href='&#x2F;images&#x2F;avatar-1.png' rel="icon" sizes="32x32" type="image/png" />
+      
+      
+      <link href='&#x2F;images&#x2F;avatar-1.png' rel="android-chrome" sizes="512x512" />
+      
+      
+      <link href='&#x2F;images&#x2F;avatar-1.png' rel="android-chrome" sizes="192x192" />
+      
+      
+      <link href='&#x2F;images&#x2F;avatar-1.png' rel="apple-touch-icon" sizes="180x180" />
+      
+      
+      <link href='&#x2F;images&#x2F;avatar-1.png' rel="apple-touch-icon" sizes="180x180" />
+      
+
+      <link href="/css/main.css" rel="stylesheet">
+      <link id="syntax_highlight" href="#" rel="stylesheet">
+
+      <title>
+        
+        conor-od
+        
+      </title>
+  </head>
+  <body class="dark:bg-gray-700 flex flex-col h-screen justify-between">
+  <!---------------------------------------------------------->
+  <!------------------------- NAVBAR ------------------------->
+  <!---------------------------------------------------------->
+  <nav id="navbar" class="bg-gray-200 dark:bg-gray-800">
+    <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+      <div class="relative flex items-center justify-between h-16">
+        <div class="flex items-center sm:hidden">
+          <!-- Mobile menu button-->
+          <button id="toggle-mobile-menu" type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" aria-controls="mobile-menu" aria-expanded="false">
+            <span class="sr-only">Open main menu</span>
+            <!--
+              Icon when menu is closed.
+              Heroicon name: outline/menu
+              Menu open: "hidden", Menu closed: "block"
+            -->
+            <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+            <!--
+              Icon when menu is open.
+              Heroicon name: outline/x
+              Menu open: "block", Menu closed: "hidden"
+            -->
+            <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        <div class="flex-1 flex items-center">
+          <div class="flex-shrink-0 flex items-center ml-2">
+            <a href="/" class="text-xl text-gray-800 dark:text-white">conor-od</a>
+            <!-- <img class="block lg:hidden h-8 w-auto" src="https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg" alt="Workflow">
+            <img class="hidden lg:block h-8 w-auto" src="https://tailwindui.com/img/logos/workflow-logo-indigo-500-mark-white-text.svg" alt="Workflow"> -->
+          </div>
+          <div class="hidden sm:block sm:ml-6">
+            <div class="nav-links flex space-x-4">
+              <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
+              
+                
+                  
+                    <a href="&#x2F;" class="text-gray-800 dark:text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Home</a>
+                  
+                    <a href="&#x2F;blog" class="text-gray-800 dark:text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Blog</a>
+                  
+                
+              
+
+              
+            </div>
+          </div>
+
+          
+          <!-- Search input in navbar -->
+          <div class="flex ml-auto relative items-center sm:mr-4">
+            <input id="search" class="rounded-xl border border-black dark:border-gray-200 h-9 text-black dark:text-gray-200 dark:bg-gray-700 w-24 sm:w-full" type="text">
+            <svg class="w-6 h-6 absolute left-2 text-black dark:text-gray-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+            <span class="absolute right-2 hidden sm:block text-gray-400 text-sm leading-5 py-0.5 px-1.5 border border-gray-300 rounded-md">
+              <kbd class="font-sans">
+                <abbr title="Command" class="no-underline">⌘</abbr>
+              </kbd>
+              <kbd class="font-sans">K</kbd>
+            </span>
+          </div>
+
+          <!---------------------------- Search box modal ---------------------------->
+          <!-- inspired by https://www.tailwindtoolbox.com/components/modal -->
+          <div id="search-modal" class="modal opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex z-10">
+            <div class="modal-overlay absolute w-full h-full bg-gray-900 opacity-50"></div>
+
+            <div class="modal-container text-gray-800 bg-gray-200 dark:bg-gray-800 dark:text-gray-400 w-11/12 md:max-w-md mx-auto rounded-lg shadow-lg z-50 mt-40 sm:mt-32 h-36 border border-2 border-gray-800 dark:border-gray-400">
+
+              <div class="modal-close absolute top-0 right-0 cursor-pointer flex flex-col items-center mt-4 mr-4 text-white text-sm z-50">
+                <svg class="fill-current text-white" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+                  <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
+                </svg>
+                <span class="text-sm">(Esc)</span>
+              </div>
+
+              <!-- Modal Content-->
+              <div class="py-4 text-left px-6 flex flex-col">
+                <!-- Modal Title -->
+                <div class="flex justify-between items-center pb-3">
+                  <p class="text-2xl font-bold">Search</p>
+                  <div class="modal-close cursor-pointer z-50">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                  </div>
+                </div>
+
+                <!-- Modal Body -->
+                <input id="search-input" class="rounded-xl border border-black h-12 text-bold text-2xl pl-2 text-black dark:text-gray-200 bg-gray-700" type="text">
+                <!-- Search results -->
+                <div id="search-results">
+                  <ul id="results-list" class="flex flex-col justify-center max-h-2xl mt-2 overflow-scroll"></ul>
+                <!--Footer-->
+                <!-- <div class="flex justify-end pt-2">
+                  <button class="px-4 bg-transparent p-3 rounded-lg text-indigo-500 hover:bg-gray-100 hover:text-indigo-400 mr-2">Action</button>
+                  <button class="modal-close px-4 bg-indigo-500 p-3 rounded-lg text-white hover:bg-indigo-400">Close</button>
+                </div> -->
+
+              </div>
+            </div>
+          </div>
+        </div>
+        
+
+        <!---------------------------- Sidebar Menu ---------------------------->
+        
+
+        
+        <!-- Theme switch button -->
+        <div class="flex p-2">
+          <button id="switch-theme" type="button" class="bg-gray-200 text-gray-800 hover:text-gray-900 dark:bg-gray-800 dark:text-gray-400 dark:hover:text-white p-1 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+            <span class="sr-only">Switch Theme</span>
+            <!-- Heroicon name: outline/light -->
+            <svg id="light" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+            </svg>
+            <!-- Heroicon name: outline/dark -->
+            <svg id="dark" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+            </svg>
+          </button>
+
+          <!-- Profile dropdown -->
+          <!-- <div class="ml-3 relative">
+            <div>
+              <button type="button" class="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                <span class="sr-only">Open user menu</span>
+                <img class="h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
+              </button>
+            </div> -->
+
+            <!--
+              Dropdown menu, show/hide based on menu state.
+
+              Entering: "transition ease-out duration-100"
+                From: "transform opacity-0 scale-95"
+                To: "transform opacity-100 scale-100"
+              Leaving: "transition ease-in duration-75"
+                From: "transform opacity-100 scale-100"
+                To: "transform opacity-0 scale-95"
+            -->
+            <!-- Active: "bg-gray-100", Not Active: "" -->
+            <!-- <div class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+              <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0">Your Profile</a>
+              <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-1">Settings</a>
+              <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-2">Sign out</a>
+            </div> -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!----------------------------- Mobile menu ----------------------------->
+    <div id="mobile-menu" class="sm:hidden fixed z-10 overflow-hidden">
+      <div class="nav-links flex flex-col space-y-4 items-center w-screen dark:bg-gray-800 transition-all ease-out duration-500 h-0">
+        <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
+        
+          
+            
+              <a href="&#x2F;" class="text-gray-800 dark:text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Home</a>
+            
+              <a href="&#x2F;blog" class="text-gray-800 dark:text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Blog</a>
+            
+          
+        
+
+        
+      </div>
+    </div>
+  </nav>
+  <!----------------------------------------------------------->
+  <!------------------------- CONTENT ------------------------->
+  <!----------------------------------------------------------->
+  <main class="max-w-7xl mx-auto text-black dark:text-gray-200 w-full mb-auto">
+    
+<div class="flex">
+  <h1 class="text-2xl text-bold my-6 mx-auto">
+    Zola | Quick Start Guide
+  </h1>
+</div>
+<div class="flex gap-x-8">
+  <div class="flex flex-col w-full border border-2 border-gray-200 dark:border-black rounded-xl p-5 shadow-2xl bg-gray-200 dark:bg-gray-800">
+
+    <div class="flex flex-col py-2 justify-center">
+     <!-- <h2 class="text-2xl text-bold"><a href='https:&#x2F;&#x2F;conor-od.github.io&#x2F;blog&#x2F;zola-quick-start&#x2F;'>Zola | Quick Start Guide</a></h2> -->
+      <p class="text-bold"></p>
+    </div>
+
+    <!-- Read time, word count, date and user -->
+    <div class="flex flex-wrap py-2">
+      <!-- Read time and word count -->
+      <div class="flex items-center w-1/3">
+        <div class="flex flex-col sm:flex-row sm:space-x-3 text-gray-900 dark:text-gray-400">
+          <span class="flex">
+            <!-- Icon clock -->
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <span class="ml-1">6 min</span>
+          </span>
+          <span class="flex">
+            <!-- Icon pencil -->
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+            </svg>
+            <span class="ml-1">1046 words</span>
+          </span>
+        </div>
+      </div>
+      <!-- Author and publish date -->
+      <div class="flex w-2/3 sm:space-x-3 text-gray-900 dark:text-gray-400 justify-end">
+        <span class="flex items-center">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+          </svg>
+          <span class="ml-1"><time datetime="2022-11-18">Published November 18, 2022</time></span>
+        </span>
+        <span class="flex items-center">
+          
+            
+              <img class="rounded-full w-6 h-6 ml-1" src="&#x2F;images&#x2F;avatar-1.png">
+            
+            <span class="ml-1">conor-od</span>
+          
+        </span>
+      </div>
+    </div>
+
+    <!-- Topics and Tags -->
+    <div class="flex flex-wrap py-2">
+      <div class="w-2/3">
+        
+          <p>
+            Topics:
+            
+            <a class="text-gray-900 dark:text-gray-400 flex py-1 items-center" href="https://conor-od.github.io/topics/quick-start-guides/">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+              </svg>
+              <span class="pl-1">Quick Start Guides</span>
+            </a>
+            
+            <a class="text-gray-900 dark:text-gray-400 flex py-1 items-center" href="https://conor-od.github.io/topics/project-conorod-me/">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+              </svg>
+              <span class="pl-1">Project | conorod.me</span>
+            </a>
+            
+          </p>
+        
+      </div>
+      <div class="w-1/3">
+        
+        <p>
+          Tags:
+          
+          <a class="text-gray-900 dark:text-gray-400 flex py-1 items-center" href="https://conor-od.github.io/tags/zola/">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+            </svg>
+            <span class="pl-1">zola</span>
+          </a>
+          
+          <a class="text-gray-900 dark:text-gray-400 flex py-1 items-center" href="https://conor-od.github.io/tags/web-frameworks/">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+            </svg>
+            <span class="pl-1">web frameworks</span>
+          </a>
+          
+          <a class="text-gray-900 dark:text-gray-400 flex py-1 items-center" href="https://conor-od.github.io/tags/static-website-generator/">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+            </svg>
+            <span class="pl-1">static website generator</span>
+          </a>
+          
+        </p>
+        
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div id="page-content" class="text-bold mt-2">
+      <h1 id="zola-quick-start-guide">Zola | Quick Start Guide</h1>
+<p>Creating a static website using Zola.</p>
+<h3 id="prerequisites">Prerequisites</h3>
+<ul>
+<li><a href="https://git-scm.com/book/en/v2/Getting-Started-Installing-Git">GIT (Version Control)</a></li>
+</ul>
+<h2 id="step-1-install-zola">Step 1: Install Zola</h2>
+<p>First we need to install Zola. There are several ways to do this which we can read about <a href="https://www.getzola.org/documentation/getting-started/installation">here</a> in the official Zola docs. To keep it simple, below are the easiest and most popular ways to install Zola.</p>
+<h3 id="linux">Linux</h3>
+<p>With Snap:</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">snap</span><span> install</span><span style="color:#bf616a;"> --edge</span><span> zola
+</span></code></pre>
+<h3 id="windows">Windows</h3>
+<p>With Chocolatey:</p>
+<pre data-lang="cmd" style="background-color:#2b303b;color:#c0c5ce;" class="language-cmd "><code class="language-cmd" data-lang="cmd"><span>choco install zola
+</span></code></pre>
+<h3 id="mac-os">Mac OS</h3>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">brew</span><span> install zola
+</span></code></pre>
+<h2 id="step-2-initialise-project">Step 2: Initialise Project</h2>
+<p>Next we need to create a new project. To do this we will initialise a new GIT repository and Zola project. </p>
+<p>Let's first create a new directory for our project. We will refer to this directory as the <code>project_root</code> from here on. Once we have created the <code>project_root</code> directory, we can open a terminal, and run the following commands:</p>
+<ul>
+<li>
+<p>Change directory to <code>project_root</code></p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#96b5b4;">cd </span><span>&lt;project_root&gt;
+</span></code></pre>
+</li>
+<li>
+<p>Initialise GIT repository</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">git</span><span> init
+</span></code></pre>
+</li>
+<li>
+<p>Initialise Zola project</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">zola</span><span> init
+</span></code></pre>
+<p>When prompted, set the URL to <code>http://localhost:8080</code> and answer <code>n</code> to the follow up configuration prompts.</p>
+</li>
+</ul>
+<p>We should now see the following directory structure:</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span>&lt;project_root&gt;
+</span><span style="color:#bf616a;">├──</span><span> content
+</span><span style="color:#bf616a;">├──</span><span> sass
+</span><span style="color:#bf616a;">├──</span><span> static
+</span><span style="color:#bf616a;">├──</span><span> templates
+</span><span style="color:#bf616a;">├──</span><span> themes
+</span><span style="color:#bf616a;">└──</span><span> config.toml
+</span></code></pre>
+<h2 id="step-3-test-our-project">Step 3: Test our project</h2>
+<p>Before we go any further, lets run a quick test by building and deploying the project locally, and viewing Zola's default landing page.</p>
+<p>To do this we run the following commands:</p>
+<ul>
+<li>
+<p>Build the project</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">zola</span><span> build
+</span></code></pre>
+</li>
+<li>
+<p>Deploy the project locally</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">zola</span><span> serve</span><span style="color:#bf616a;"> --base-url</span><span> localhost</span><span style="color:#bf616a;"> --port</span><span> 8080
+</span></code></pre>
+</li>
+</ul>
+<p>We can now open our web browser and browse to <a href="http://localhost:8080">localhost:8080</a>. If our project built and deployed correctly, we should see the following landing page:</p>
+<p><img src="/blog/zola-quick-start/zola-default-index.png" alt="Zola index page" title="Zola index page" /></p>
+<h2 id="step-3-setting-up-a-theme">Step 3: Setting up a Theme</h2>
+<p>Now we have our project setup, we can begin the process of building our website. First we will choose a theme, then we will add it to our project and enable it. For the purposes of this tutorial we will be using the <a href="https://www.getzola.org/themes/blow/">blow</a> theme. For reference, more themes can be found <a href="https://www.getzola.org/themes/">here</a>.</p>
+<h3 id="get-a-theme">Get a Theme</h3>
+<p>We will add the <code>blow</code> theme to our project as a git submodule as opposed to checking it out as a repository inside our project repository, as the official docs suggest. To do this we can run the following commands:</p>
+<ul>
+<li>Change directory to <code>&lt;project_root&gt;/themes</code><pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#96b5b4;">cd </span><span>&lt;project_root&gt;/themes
+</span></code></pre>
+</li>
+<li>Add <code>blow</code> theme as a git submodule<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">git</span><span> submodule add</span><span style="color:#bf616a;"> -b</span><span> main git@github.com:tchartron/blow.git blow
+</span></code></pre>
+</li>
+</ul>
+<p>We should now have the following directory structure:</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span>&lt;project_root&gt;
+</span><span style="color:#bf616a;">├──</span><span> content
+</span><span style="color:#bf616a;">├──</span><span> sass
+</span><span style="color:#bf616a;">├──</span><span> static
+</span><span style="color:#bf616a;">├──</span><span> templates
+</span><span style="color:#bf616a;">├──</span><span> themes
+</span><span>    </span><span style="color:#bf616a;">└──</span><span> blow
+</span><span style="color:#bf616a;">└──</span><span> config.toml
+</span></code></pre>
+<h3 id="enable-theme">Enable Theme</h3>
+<p>To enable a theme, we set the <code>theme</code> property at the top level of the <code>config.toml</code> to match the folder name of the theme.</p>
+<p>To enable our <code>blow</code> theme we need to add the following property to our <code>config.toml</code>:</p>
+<pre data-lang="toml" style="background-color:#2b303b;color:#c0c5ce;" class="language-toml "><code class="language-toml" data-lang="toml"><span style="color:#65737e;"># The site theme to use.
+</span><span style="color:#bf616a;">theme </span><span>= &quot;</span><span style="color:#a3be8c;">blow</span><span>&quot;
+</span></code></pre>
+<p>Now we can refresh the webpage (<a href="http://localhost:8080">localhost:8080</a>) and observe it has changed to the <code>blow</code> theme, like so:</p>
+<p><img src="/blog/zola-quick-start/blow-theme-default-index.png" alt="Blow theme index page" title="Blow theme index page" /></p>
+<h2 id="step-4-configure-theme">Step 4: Configure Theme</h2>
+<p>Next we can modify our themes content by changing configuration in our <code>config.toml</code>. Below is example configuration for a simple one page website we can use add to our <code>config.toml</code>:</p>
+<pre data-lang="toml" style="background-color:#2b303b;color:#c0c5ce;" class="language-toml "><code class="language-toml" data-lang="toml"><span>[extra]
+</span><span style="color:#bf616a;">enable_search </span><span>= </span><span style="color:#d08770;">false
+</span><span style="color:#bf616a;">enable_sidebar </span><span>= </span><span style="color:#d08770;">false
+</span><span style="color:#bf616a;">enable_multilingue </span><span>= </span><span style="color:#d08770;">false
+</span><span style="color:#bf616a;">enable_adsense </span><span>= </span><span style="color:#d08770;">false
+</span><span>
+</span><span>[extra.navbar]
+</span><span style="color:#bf616a;">title </span><span>= &quot;</span><span style="color:#a3be8c;">J-Doe</span><span>&quot;
+</span><span style="color:#bf616a;">items </span><span>= []
+</span><span>
+</span><span style="color:#65737e;"># Index page
+</span><span>[extra.index]
+</span><span style="color:#bf616a;">title </span><span>= &quot;</span><span style="color:#a3be8c;">John Doe</span><span>&quot;
+</span><span style="color:#bf616a;">image </span><span>= &quot;</span><span style="color:#a3be8c;">https://conor-od.github.io/blog/zola-quick-start/default-logo.png</span><span>&quot;
+</span><span style="color:#bf616a;">image_alt </span><span>= &quot;</span><span style="color:#a3be8c;">Website Logo</span><span>&quot;
+</span><span>
+</span><span>[extra.social]
+</span><span style="color:#bf616a;">github </span><span>= &quot;</span><span style="color:#a3be8c;">https://github.com/johndoe</span><span>&quot;
+</span><span style="color:#bf616a;">linkedin </span><span>= &quot;</span><span style="color:#a3be8c;">https://www.linkedin.com/in/johndoe/</span><span>&quot;
+</span><span style="color:#bf616a;">email </span><span>= &quot;</span><span style="color:#a3be8c;">john.doe@email.me</span><span>&quot;
+</span></code></pre>
+<p>Now we can refresh the webpage (<a href="http://localhost:8080">localhost:8080</a>) and observe our configuration has been applied, like so:</p>
+<p><img src="/blog/zola-quick-start/blow-theme-configured-index.png" alt="Blow theme configured index page" title="Blow theme configured index page" /></p>
+<h2 id="step-5-extending-a-theme">Step 5: Extending a Theme</h2>
+<p>Finally, we will make a small change to our index page beyond what our theme supports out of the box. This change will be adding another social media link icon to the homepage alongside the Github, Linkedin and Email icons.</p>
+<p>To achieve this first we need to override the theme file we want to change with our own version. To do this we add a file of the same name to our <code>&lt;project_root&gt;/templates</code> directory, in this case we will be overriding the <code>index.html</code> file. As we only want to modify the <code>blow</code> theme's <code>index.html</code>, lets copy the theme's version of the file, and then modify it. To do this copy the blow theme's <code>&lt;project_root&gt;/themes/blow/templates/index.html</code> to our projects template directory <code>&lt;project_root&gt;/templates/index.html</code>. </p>
+<p>Once copied, we should have the following directory structure:</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span>&lt;project_root&gt;
+</span><span style="color:#bf616a;">├──</span><span> content
+</span><span style="color:#bf616a;">├──</span><span> sass
+</span><span style="color:#bf616a;">├──</span><span> static
+</span><span style="color:#bf616a;">├──</span><span> templates
+</span><span>    </span><span style="color:#bf616a;">└──</span><span> index.html
+</span><span style="color:#bf616a;">├──</span><span> themes
+</span><span>    </span><span style="color:#bf616a;">└──</span><span> blow
+</span><span style="color:#bf616a;">└──</span><span> config.toml
+</span></code></pre>
+<p>Now we can add our stackoverflow icon change by adding a snippet of html to our new <code>index.html</code> file, and a configuration property to our <code>config.yaml</code> as shown below:</p>
+<ul>
+<li>
+<p>Add the following to <code>&lt;project_root&gt;/templates/index.html</code>:</p>
+<pre data-lang="html" style="background-color:#2b303b;color:#c0c5ce;" class="language-html "><code class="language-html" data-lang="html"><span>    {% if config.extra.social.stackoverflow %}
+</span><span>    &lt;</span><span style="color:#bf616a;">a </span><span style="color:#d08770;">href</span><span>=&quot;</span><span style="color:#a3be8c;">{{config.extra.social.stackoverflow}}</span><span>&quot; </span><span style="color:#d08770;">target</span><span>=&quot;</span><span style="color:#a3be8c;">_blank</span><span>&quot;&gt;
+</span><span>        &lt;</span><span style="color:#bf616a;">svg </span><span style="color:#d08770;">xmlns</span><span>=&quot;</span><span style="color:#a3be8c;">http://www.w3.org/2000/svg</span><span>&quot; </span><span style="color:#d08770;">class</span><span>=&quot;</span><span style="color:#a3be8c;">h-12 w-12 text-black dark:text-white</span><span>&quot; </span><span style="color:#d08770;">viewBox</span><span>=&quot;</span><span style="color:#a3be8c;">0 0 18 18</span><span>&quot; </span><span style="color:#d08770;">fill</span><span>=&quot;</span><span style="color:#a3be8c;">currentColor</span><span>&quot; </span><span style="color:#d08770;">stroke</span><span>=&quot;</span><span style="color:#a3be8c;">none</span><span>&quot;&gt;
+</span><span>        &lt;</span><span style="color:#bf616a;">path </span><span style="color:#d08770;">d</span><span>=&quot;</span><span style="color:#a3be8c;">M12.412 14.572V10.29h1.428V16H1v-5.71h1.428v4.282h9.984z</span><span>&quot;/&gt; &lt;</span><span style="color:#bf616a;">path </span><span style="color:#d08770;">d</span><span>=&quot;</span><span style="color:#a3be8c;">M3.857 13.145h7.137v-1.428H3.857v1.428zM10.254 0 9.108.852l4.26 5.727 1.146-.852L10.254 0zm-3.54 3.377 5.484 4.567.913-1.097L7.627 2.28l-.914 1.097zM4.922 6.55l6.47 3.013.603-1.294-6.47-3.013-.603 1.294zm-.925 3.344 6.985 1.469.294-1.398-6.985-1.468-.294 1.397z</span><span>&quot;/&gt;
+</span><span>        &lt;/</span><span style="color:#bf616a;">svg</span><span>&gt;
+</span><span>    &lt;/</span><span style="color:#bf616a;">a</span><span>&gt;
+</span><span>    {% endif %}
+</span></code></pre>
+</li>
+<li>
+<p>Add a link to our stackoverflow profile in the <code>config.toml</code> configuration, along side our other social media links from step 4:</p>
+<pre data-lang="toml" style="background-color:#2b303b;color:#c0c5ce;" class="language-toml "><code class="language-toml" data-lang="toml"><span>[extra.social]
+</span><span style="color:#bf616a;">stackoverflow </span><span>= &quot;</span><span style="color:#a3be8c;">https://stackoverflow.com/users/1234/john-doe</span><span>&quot;
+</span></code></pre>
+</li>
+</ul>
+<p>Now we can refresh the webpage (<a href="http://localhost:8080">localhost:8080</a>) and observe our new stackoverflow icon, like so:</p>
+<p><img src="/blog/zola-quick-start/blow-theme-customised-index.png" alt="Blow theme customised index page" title="Blow theme customised index page" /></p>
+<h2 id="conclusion">Conclusion</h2>
+<p>That's it. We have built our first static site using Zola!</p>
+<p>Zola is extremely easy and fast way to get a simple static site up and running. I will be using it for building <a href="https://conorod.me">conorod.me</a> and include more posts on how I do that <a href="/topics/project-conorod-me/">here</a>.</p>
+
+    </div>
+
+
+
+  </div>
+
+
+    <!-- Table of content -->
+    
+
+
+</div>
+
+  </main>
+
+  <!----------------------------------------------------------->
+  <!------------------------- PAGINATION ---------------------->
+  <!----------------------------------------------------------->
+  
+
+
+
+  <!---------------------------------------------------------->
+  <!------------------------- FOOTER ------------------------->
+  <!---------------------------------------------------------->
+  <footer class="max-w-7xl mx-auto relative pt-1 px-2 border-gray-300 dark:border-gray-200 w-full">
+    <!-- <div class="container mx-auto px-6">
+      <div class="sm:flex sm:mt-8">
+        <div class="mt-8 sm:mt-0 sm:w-full sm:px-8 flex flex-col md:flex-row justify-between">
+          <div class="flex flex-col">
+            <span class="font-bold text-gray-700 uppercase mb-2">Footer header 1</span>
+            <span class="my-2"><a href="#" class="text-blue-700  text-md hover:text-blue-500">link 1</a></span>
+            <span class="my-2"><a href="#" class="text-blue-700  text-md hover:text-blue-500">link 1</a></span>
+            <span class="my-2"><a href="#" class="text-blue-700  text-md hover:text-blue-500">link 1</a></span>
+          </div>
+          <div class="flex flex-col">
+            <span class="font-bold text-gray-700 uppercase mt-4 md:mt-0 mb-2">Footer header 2</span>
+            <span class="my-2"><a href="#" class="text-blue-700 text-md hover:text-blue-500">link 1</a></span>
+            <span class="my-2"><a href="#" class="text-blue-700  text-md hover:text-blue-500">link 1</a></span>
+            <span class="my-2"><a href="#" class="text-blue-700 text-md hover:text-blue-500">link 1</a></span>
+          </div>
+          <div class="flex flex-col">
+            <span class="font-bold text-gray-700 uppercase mt-4 md:mt-0 mb-2">Footer header 3</span>
+            <span class="my-2"><a href="#" class="text-blue-700  text-md hover:text-blue-500">link 1</a></span>
+            <span class="my-2"><a href="#" class="text-blue-700  text-md hover:text-blue-500">link 1</a></span>
+            <span class="my-2"><a href="#" class="text-blue-700  text-md hover:text-blue-500">link 1</a></span>
+          </div>
+        </div>
+      </div>
+    </div> -->
+  </footer>
+
+  <!------------------------- SCRIPTS ------------------------->
+  <script defer src="/js/main.js"></script>
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/elasticlunr/0.9.6/elasticlunr.min.js"></script>
+    <script src="/search_index.en.js"></script>
+    <script defer src="/js/search.js"></script>
+  
+  
+  
+  
+  <script defer src="/js/page.js"></script>
+
+  </body>
+</html>
